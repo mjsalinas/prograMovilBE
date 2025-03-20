@@ -31,4 +31,45 @@ public class UsuariosController : ControllerBase
 
         return Ok(usuario);
     }
+
+    [HttpPost]
+    public async Task<ActionResult> CrearUsuario([FromBody]Usuario usuario)
+    {
+        if (usuario == null)
+        {
+            return BadRequest("Datos de usuario vienen vacios");
+        }
+        var nuevoUsuario = await _usuarioService.CrearUsuario(usuario);
+        return Ok(nuevoUsuario);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> ActualizarUsuario(Guid id, [FromBody] Usuario usuarioActualizado)
+    {
+        if (usuarioActualizado == null)
+        {
+            return BadRequest("Datos de usuario vienen vacios");
+        }
+
+        var response = await _usuarioService.ActualizarUsuario(id, usuarioActualizado);
+
+        if (response == false)
+        {
+            return NotFound("Usuario no encontrado en base de datos");
+        }
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> EliminarUsuario(Guid id)
+    {
+        var response = await _usuarioService.EliminarUsuario(id);
+        if (response == false)
+        {
+            return NotFound("Usuario no encontrado en base de datos");
+        }
+        return NoContent();
+    }
+    
 }
