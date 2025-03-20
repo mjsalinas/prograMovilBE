@@ -36,5 +36,29 @@ public class UsuarioService
         
         return usuario;
     }
+    
+    //actualizar un usuario
+    public async Task<bool> ActualizarUsuario(Guid id, Usuario usuarioActualizado)
+    {
+        var usuario = await _context.Usuarios.FindAsync(id);
+        if (usuario == null) return false;
 
+        usuario.Nombre = usuarioActualizado.Nombre;
+        usuario.Correo = usuarioActualizado.Correo;
+        usuario.Contrasena = usuarioActualizado.Contrasena;
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
+    
+    //eliminar un usuario
+    public async Task<bool> EliminarUsuario(Guid id)
+    {
+        var usuario = await _context.Usuarios.FindAsync(id);
+        if (usuario == null) return false;
+
+        _context.Usuarios.Remove(usuario);
+        await _context.SaveChangesAsync();
+        return true;
+    } 
 }
