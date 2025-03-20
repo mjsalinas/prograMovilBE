@@ -23,6 +23,8 @@ builder.Services.AddSwaggerGen(options =>
     }
     );
 
+builder.Services.AddScoped<UsuarioService>();
+
 var app = builder.Build();
 app.UseAuthorization();
 app.MapControllers();
